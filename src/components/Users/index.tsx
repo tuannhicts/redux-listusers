@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { getListUsers } from '../../API/index';
 import { useStyles } from './styles';
 import {
   Typography,
@@ -14,40 +13,30 @@ import {
   Grid,
 } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
-const index = () => {
-  const [users, setUsers] = useState<any>([]);
+import { receiveApiData } from '../../redux/actions/users-action';
+import { Information, InformationActionTypes } from '../../redux/type-redux';
+import usersReducers from '../../redux/reducers/users-reducers';
+import { useSelector, useDispatch } from 'react-redux';
+interface PropsFromState {
+  data: Information[];
+}
+
+interface propsFromDispatch {
+  receiveApiData: () => any;
+}
+
+type AllProps = PropsFromState & propsFromDispatch;
+
+const Users: React.FC = () => {
   const classes = useStyles();
-  useEffect(() => {
-    getListUsers().then((res) => {
-      setUsers(res.data.data);
-    });
-  }, []);
-  console.log('users:', users);
+  const selector = useSelector((state) => state);
+  console.log(selector);
 
   return (
-    <Container className={classes.root}>
-      <Grid container spacing={4}>
-        {users.map((person: any) => (
-          <Grid item>
-            <Card key={person.id} className={classes.container}>
-              <div className={classes.content}>
-                <Avatar src={person.avatar} className={classes.avatar} />
-                <CardContent>
-                  <Typography>{person.first_name}</Typography>
-                  <Typography>{person.email}</Typography>
-                </CardContent>
-                <CardActions>
-                  <IconButton>
-                    <InfoIcon />
-                  </IconButton>
-                </CardActions>
-              </div>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+    <div>
+      <h2>Users</h2>
+    </div>
   );
 };
 
-export default index;
+export default Users;
